@@ -1,0 +1,21 @@
+body {
+    background-color: #428bca;
+}
+
+.container {
+    margin-top: ;
+}
+
+/*LOG IN*/
+
+.container-login {
+    background-color: white;
+    margin-top: 10%;
+    border-style: solid;
+}
+
+form {
+    margin: 5%;
+    margin-bottom: 5%;
+   
+}
