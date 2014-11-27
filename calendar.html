@@ -3,11 +3,20 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>HA-IT Calender</title>
-    <link rel='stylesheet' href='style.css' />
+    
+    <!--CSS-->
     <link rel='stylesheet' href='fullcalendar/fullcalendar.css' />
+    <link rel='stylesheet' href='bootstrap/css/bootstrap.min.css' />
+     <link rel='stylesheet' href='jquery-ui/jquery-ui.min.css' />
+    <link rel='stylesheet' href='css/calendar.css' />
+    
+    <!--Javascript-->
     <script src='fullcalendar/lib/jquery.min.js'></script>
     <script src='fullcalendar/lib/moment.min.js'></script>
     <script src='fullcalendar/fullcalendar.js'></script>
+    <script src='jquery-ui/jquery-ui.min.js'></script>
+    <script src="js/jquery.storageapi.min.js"></script>
+    <script src="js/json2.js"></script>
     <script src="js/calendar.js"></script>
 
 </head>
@@ -16,14 +25,46 @@
 
 <div>
 
-    <div id="header">
-            <div id="hait-logo"><img src="images/hait-header.jpg"></div>
+    <div class="header">
+        <div class="welcome">
+            Welcome, enjoy your stay!
+        </div>
+        <div class="header-content">
+            <button type="button" class="btn btn-success" id="addCalendar">Add Calendar</button>
+            <button type="button" class="btn btn-danger" id="logout">Log Out</button>
+        </div>
     </div>
 
     <br>
 
-    <div id='mycalendar'></div>
-
+    <div class="content">
+        <div id="myCalendar"></div>
+    </div>
+    
+    <br>
+    
+    <!--<div class="footer">
+        <div><center>Tekst</center></div>
+    </div>
+    -->
+    
+    <!--<div id="calEventDialog">
+    <form>
+        <fieldset>
+        <label for="eventTitle">Title</label>
+        <input type="text" name="eventTitle" id="eventTitle" /><br>
+        <label for="eventStart">Start Date</label>
+        <input type="text" name="eventStart" id="eventStart" /><br>
+        <label for="eventEnd">End Date</label>
+        <input type="text" name="eventEnd" id="eventEnd" /><br>
+        <input type="radio" id="allday" name="allday" value="1">
+        Half Day
+        <input type="radio" id="allday" name="allday" value="2">
+        All Day
+        </fieldset>
+    </form>
+    </div>-->
+    
 </div>
 
 
