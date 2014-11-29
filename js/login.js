@@ -27,8 +27,8 @@ $(document).ready(function () {
             
             //Response from server
             request.done(function (response, textStatus, jqXHR){
-                //console.log(response);
                 login(response);
+                console.log(response);
             });
 
             //Callback handler that will be called on failure
@@ -44,18 +44,78 @@ $(document).ready(function () {
             function login(response){
                 
                 //If user logged in
-                if(response.authentication){
-                    console.log("Error logging in");
-                } //If error was returned
-                else {
+                if(response.authentication == "true"){
                     //Store userid and events in session
                     $.sessionStorage.set("userid", response.userid);
-                    $.sessionStorage.set("events", response.events);
-                    //Direct user to calendar
+                    
+                    //Get Calendar, events, notes from server
+                    getCalendars();
+                    getEvents();
+                    
+                    //Show calendar
                     window.location = 'calendar.html';
+                    
+                } //If error was returned
+                else {
+                    //Error
+                    $(".form-group").addClass("has-error");
                 }
             }
              
     });
+    
+    function getCalendars() {
+
+            //Request to server
+            var request = $.ajax({
+                url: "http://127.0.0.1:52400/getAllCalendars/"+ $.sessionStorage.get("userid"),
+                type: "GET",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                //data: header
+            });
+            
+            //Response from server
+            request.done(function (response, textStatus, jqXHR){
+                $.sessionStorage.set("calendar", response);
+                //console.log(response);
+            });
+    }
+    
+    function getEvents() {
+
+            //Request to server
+            var request = $.ajax({
+                url: "http://127.0.0.1:52400/getAllEvents/"+ $.sessionStorage.get("userid"),
+                type: "GET",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                //data: header
+            });
+            
+            //Response from server
+            request.done(function (response, textStatus, jqXHR){
+                $.sessionStorage.set("events", response);
+                //console.log(response);
+            });
+    }
+    
+    /*      function getNotes() {
+
+            //Request to server
+            var request = $.ajax({
+                url: "http://127.0.0.1:52400/getAllNotes/"+ $.sessionStorage.get("userid"),
+                type: "GET",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                //data: header
+            });
+            
+            //Response from server
+            request.done(function (response, textStatus, jqXHR){
+                $.sessionStorage.set("notes", response);
+                //console.log(response);
+            });
+    }*/
     
 });

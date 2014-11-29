@@ -7,14 +7,13 @@
     <!--CSS-->
     <link rel='stylesheet' href='fullcalendar/fullcalendar.css' />
     <link rel='stylesheet' href='bootstrap/css/bootstrap.min.css' />
-     <link rel='stylesheet' href='jquery-ui/jquery-ui.min.css' />
-    <link rel='stylesheet' href='css/calendar.css' />
+    <link rel='stylesheet' href='css/calendar.css'/>
     
     <!--Javascript-->
     <script src='fullcalendar/lib/jquery.min.js'></script>
     <script src='fullcalendar/lib/moment.min.js'></script>
     <script src='fullcalendar/fullcalendar.js'></script>
-    <script src='jquery-ui/jquery-ui.min.js'></script>
+    <script src='bootstrap/js/bootstrap.min.js'></script>
     <script src="js/jquery.storageapi.min.js"></script>
     <script src="js/json2.js"></script>
     <script src="js/calendar.js"></script>
@@ -24,46 +23,103 @@
 <body>
 
 <div>
-
+    
+    <!-- Header -->
     <div class="header">
         <div class="welcome">
             Welcome, enjoy your stay!
         </div>
         <div class="header-content">
-            <button type="button" class="btn btn-success" id="addCalendar">Add Calendar</button>
+            <button type="button" class="btn btn-success" id="createEvent" data-toggle="modal" data-target="#eventModal">Create Event</button>
+            <button type="button" class="btn btn-success" id="createCalendar" data-toggle="modal" data-target="#calendarModal">Create Calendar</button>
             <button type="button" class="btn btn-danger" id="logout">Log Out</button>
         </div>
     </div>
-
     <br>
-
+    
+    
+    <!-- Conent/Calendar -->
     <div class="content">
         <div id="myCalendar"></div>
     </div>
-    
     <br>
     
+    <!-- Footer -->
     <!--<div class="footer">
         <div><center>Tekst</center></div>
-    </div>
-    -->
-    
-    <!--<div id="calEventDialog">
-    <form>
-        <fieldset>
-        <label for="eventTitle">Title</label>
-        <input type="text" name="eventTitle" id="eventTitle" /><br>
-        <label for="eventStart">Start Date</label>
-        <input type="text" name="eventStart" id="eventStart" /><br>
-        <label for="eventEnd">End Date</label>
-        <input type="text" name="eventEnd" id="eventEnd" /><br>
-        <input type="radio" id="allday" name="allday" value="1">
-        Half Day
-        <input type="radio" id="allday" name="allday" value="2">
-        All Day
-        </fieldset>
-    </form>
     </div>-->
+    
+    <!-- Create Event -->
+    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Create Event</h4>
+                </div>
+                <div class="modal-body">
+                
+                <!-- Form -->
+                <form role="form">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="text" class="form-control" placeholder="Text input">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="text" class="form-control" placeholder="Text input">
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+                               
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btnCreateCal">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Create Calendar -->
+    <div class="modal fade" id="calendarModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Create Calendar</h4>
+                </div>
+                <div class="modal-body">
+                
+                <!-- Form -->
+                <form role="form" id="addNewCalendarForm">
+                    <div class="form-group">
+                        <label for="calendarName">Calendar name</label>
+                        <input type="text" class="form-control" id="calendarName" placeholder="Text input">
+                        
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optionsRadios" id="publicCheck" value="1" checked>Public
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optionsRadios" id="privateCheck" value="2">Private
+                            </label>
+                        </div>
+                    </div>
+                </form>
+                               
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btnCreateCal">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
     
 </div>
 
