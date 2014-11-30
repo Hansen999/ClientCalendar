@@ -3,32 +3,34 @@ body {
 }
 
 .navbar {
-    /*background-color: #428bca;
-    border-bottom: solid;*/
-}
-
-.welcome {
-    position: absolute;
-    color: white;
-    left: 2%;
-    margin-top: 15px;
-}
-
-.header-content {
-    position: absolute;
-    right: 2%;
-    margin-top: 10px;
+    /*background-color: #428bca;*/
+    border-bottom: solid;
+    border-color: #bcbcbc;
 }
 
 .content {
     margin: 2%;
 }
 
+.QOTD {
+    font-family: "Goudy Old Style",Garamond,"Big Caslon","Times New Roman",serif;
+    font-style: italic;
+    font-size: medium;
+    margin-left: 2%;
+}
+
 .footer {
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    height: 50px;
-    width: 100%;
     background-color: #428bca;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    border-top: solid;
+    border-color: #bcbcbc;
+    z-index: 1;
+}
+
+#footertext {
+    color: white;
+    margin-top: 15px;
 }
