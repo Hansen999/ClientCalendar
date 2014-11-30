@@ -14,6 +14,7 @@
     <script src='fullcalendar/lib/moment.min.js'></script>
     <script src='fullcalendar/fullcalendar.js'></script>
     <script src='bootstrap/js/bootstrap.min.js'></script>
+    <script src='js/bootstrap-datetimepicker.js'></script>
     <script src="js/jquery.storageapi.min.js"></script>
     <script src="js/json2.js"></script>
     <script src="js/calendar.js"></script>
@@ -25,17 +26,38 @@
 <div>
     
     <!-- Header -->
-    <div class="header">
-        <div class="welcome">
-            Welcome, enjoy your stay!
+    <nav class="navbar navbar-default" id="navbar" role="navigation">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">HA-IT Calendar</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                
+                <ul class="nav navbar-nav">
+                <button type="button" class="btn btn-default navbar-btn btn-primary" id="createEvent" data-toggle="modal" data-target="#eventModal">Create Event</button>
+                <button type="button" class="btn btn-default navbar-btn btn-primary" id="createCalendar" data-toggle="modal" data-target="#calendarModal">Create Calendar</button>
+                <button type="button" class="btn btn-default navbar-btn btn-primary" id="shareCalendar" data-toggle="modal" data-target="#shareModal">Share Calendar</button>
+                <button type="button" class="btn btn-default navbar-btn btn-danger" id="deleteCalendar" data-toggle="modal" data-target="#deleteModal">Delete Calendar</button>
+                </ul>
+                
+                <ul class="nav navbar-nav navbar-right">
+                <button type="button" class="btn btn-default navbar-btn btn-danger" id="logout">Log Out</button>
+                </ul>
+            
+            </div>
+            <!-- /.navbar-collapse -->
         </div>
-        <div class="header-content">
-            <button type="button" class="btn btn-success" id="createEvent" data-toggle="modal" data-target="#eventModal">Create Event</button>
-            <button type="button" class="btn btn-success" id="createCalendar" data-toggle="modal" data-target="#calendarModal">Create Calendar</button>
-            <button type="button" class="btn btn-danger" id="logout">Log Out</button>
-        </div>
-    </div>
-    <br>
+        <!-- /.container-fluid -->
+    </nav>
     
     
     <!-- Conent/Calendar -->
@@ -62,21 +84,51 @@
                 
                 <!-- Form -->
                 <form role="form">
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="text" class="form-control" placeholder="Text input">
+                     <div class="form-group">
+                        <label for="calendar">Calendar</label>
+                        <select class="form-control" id="selectcalendar">
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label>
-                        <input type="text" class="form-control" placeholder="Text input">
+                        <label for="title">Title</label>
+                        <input type="text" class="form-control" id="title" placeholder="Title">
                     </div>
-                    <button type="submit" class="btn btn-default">Submit</button>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" class="form-control" id="location" placeholder="Location">
+                    </div>
+                    <div class="form-group">
+                        <label for="start">Start</label>
+                        <div class='input-group date' id='datetimepicker1'>
+                            <input type='text' class="form-control" id="start" data-date-format="DD/MM/YYYY hh:mm"/>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#datetimepicker1').datetimepicker();
+                            });
+                        </script>
+                    </div>
+                    <div class="form-group">
+                        <label for="end">End</label>
+                        <div class='input-group date' id='datetimepicker2'>
+                            <input type='text' class="form-control" id="end" data-date-format="DD/MM/YYYY hh:mm" />
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                        <script type="text/javascript">
+                            $(function () {
+                                $('#datetimepicker2').datetimepicker();
+                            });
+                        </script>
+                    </div>
                 </form>
                                
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btnCreateCal">Save changes</button>
+                    <button type="button" class="btn btn-primary" id="btnCreateEvent">Save changes</button>
                 </div>
             </div>
         </div>
@@ -116,6 +168,69 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="btnCreateCal">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Share Calendar -->
+    <div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Share Calendar</h4>
+                </div>
+                <div class="modal-body">
+                
+                <!-- Form -->
+                <form role="form">
+                    <div class="form-group">
+                        <label for="calendar">Calendar</label>
+                        <select class="form-control" id="sharecalendar">
+                        </select>
+                    </div>
+                     <div class="form-group">
+                        <label for="email">Email</label>
+                        <select class="form-control" id="shareuser">
+                        </select>
+                    </div>
+                </form>
+                               
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btnShareCal">Share</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delete Calendar -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Delete Calendar</h4>
+                </div>
+                <div class="modal-body">
+                
+                <!-- Form -->
+                <form role="form">
+                     <div class="form-group">
+                        <label for="calendar">Calendar</label>
+                        <select class="form-control" id="deletecalendar">
+                        </select>
+                    </div>
+                </form>
+                               
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="btnDeleteCal">Delete</button>
                 </div>
             </div>
         </div>

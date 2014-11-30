@@ -1,18 +1,92 @@
-//Create event array from session
-    var eventTest = [];
-    var eventsSession = $.sessionStorage.get("events");
-        if(eventsSession != null){
-        eventsSession.forEach(function(event){
-            var eventObj = {};
-            eventObj["id"] = event.eventid;
-            eventObj["start"] = new Date(event.start);
-            eventObj["end"] = new Date(event.end);
-            eventObj["title"] = event.title;
-            eventTest.push(eventObj);
-        });
-        }
+//Get all calendar & events
+    getCalendars();
+    getEvents();
+    getNotes();
+    getUsers();
 
-$(document).ready(function () {
+    var calendars = [];
+    var events = [];
+    var notes = [];
+    var users = [];
+
+    function getCalendars() {
+
+            //Request to server
+            var request = $.ajax({
+                url: "http://127.0.0.1:52400/getAllCalendars/"+ $.sessionStorage.get("userid"),
+                type: "GET",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                //data: header
+            });
+            
+            //Response from server
+            request.done(function (response, textStatus, jqXHR){
+                
+                response.forEach(function(calendar){
+                    calendars.push(calendar);
+                });
+                
+            });
+    }
+    
+    function getEvents() {
+        
+            //Request to server
+            var request = $.ajax({
+                url: "http://127.0.0.1:52400/getAllEvents/"+ $.sessionStorage.get("userid"),
+                type: "GET",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                //data: header
+            });
+            
+            //Response from server
+            request.done(function (response, textStatus, jqXHR){
+                
+                response.forEach(function(event){
+                    var eventObj = {};
+                    eventObj["id"] = event.eventid;
+                    eventObj["start"] = new Date(event.start);
+                    eventObj["end"] = new Date(event.end);
+                    eventObj["title"] = event.title;
+                    eventObj["location"] = event.location;
+                    eventObj["notes"] = event.notes;
+                    eventObj["forecast"] = event.weatherData;
+                    events.push(eventObj);
+                });
+                   
+            });
+    }
+    
+    function getNotes() {
+    }
+
+    function getUsers() {
+
+            //Request to server
+            var request = $.ajax({
+                url: "http://127.0.0.1:52400/getAllUsers/",
+                type: "GET",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                //data: header
+            });
+            
+            //Response from server
+            request.done(function (response, textStatus, jqXHR){
+                
+                response.forEach(function(user){
+                    users.push(user);
+                });
+                
+            });
+    }
+
+$(document).ajaxStop(function () {
+    
+    setCalendarList();
+    setUserList();
     
     //Create calendar
     $('#myCalendar').fullCalendar({
@@ -29,21 +103,21 @@ $(document).ready(function () {
         height: 600,
         
         //Passing events into calendar
-        events: eventTest,
+        events: events,
         eventColor: '#428bca',
         eventBorderColor: '#bcbcbc',
         
         //Event is clicked
         eventClick: function(calEvent, jsEvent, view) {
-
-        alert('Event: ' + calEvent.title);
-        alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-        alert('View: ' + view.name);
-
-        // change the border color just for fun
-        $(this).css('border-color', 'red');
-
-    }
+        },
+        
+        //Trigger create event
+        dayClick: function(date, jsEvent, view) {
+            
+            //Show modal
+            $('#eventModal').modal('show');
+            
+        },
     })
     
     //Log out button
@@ -53,7 +127,50 @@ $(document).ready(function () {
         window.location = 'login.html';
     });
     
-    //Login in button clicked
+    //Create event button
+    $("#btnCreateEvent").click(function(){
+            
+            //Object of users input
+            var event = {
+                userid : $.sessionStorage.get("userid"),
+                calendarid : $("#selectcalendar").find(":selected").val(),
+                title : $("#title").val(),
+                location : $("#location").val(),
+                start : $("#start").val(),
+                end : $("#end").val(),
+            }
+            
+            //Data object the server will recieve
+            var json = "id=addEvent&jsonData=" + JSON.stringify(event);
+            console.log(json);
+
+            //Request to server
+            var request = $.ajax({
+                url: "http://127.0.0.1:52400/",
+                type: "POST",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                data: json
+            });
+            
+            //Response from server
+            request.done(function (response, textStatus, jqXHR){
+                //calResponse(response);
+            });
+        
+            //Check response from server
+            function calResponse(response){
+                
+                if (response.response == "CALENDAR CREATED") {
+                    $('#myModal').modal('hide');     
+                } else {
+                    $(".form-group").addClass("has-error");
+                }
+            }
+        
+    });
+    
+    //Create Calendar button
     $("#btnCreateCal").click(function(){
             
             //Object of users input
@@ -80,16 +197,45 @@ $(document).ready(function () {
                 console.log(response);
                 calResponse(response);
             });
-
-            //Callback handler that will be called on failure
-            request.fail(function (jqXHR, textStatus, errorThrown){
-                // log the error to the console
-                console.error(
-                        "The following error occured: "+
-                        textStatus, errorThrown
-                );
-            }); 
             
+            //Check response from server
+            function calResponse(response){
+                
+                if (response.response == "CALENDAR CREATED") {
+                    $('#calendarModal').modal('hide');     
+                } else {
+                    $(".form-group").addClass("has-error");
+                }
+            }
+        
+    });
+    
+    $("#btnShareCalendar").click(function(){
+            
+            //Object of users input
+            var calendar = {
+                calendarid : $("#selectcalendar").find(":selected").val(),
+                email : $("#selectcalendar").find(":selected").val(),
+            }
+            
+            //Data object the server will recieve
+            var json = "id=addEvent&jsonData=" + JSON.stringify(calendar);
+            console.log(json);
+
+            /*//Request to server
+            var request = $.ajax({
+                url: "http://127.0.0.1:52400/",
+                type: "POST",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                data: json
+            });
+            
+            //Response from server
+            request.done(function (response, textStatus, jqXHR){
+                //calResponse(response);
+            });*/
+        
             //Check response from server
             function calResponse(response){
                 
@@ -99,8 +245,85 @@ $(document).ready(function () {
                     $(".form-group").addClass("has-error");
                 }
             }
+        
+    });
+    
+    $("#btnDeleteCal").click(function(){
+            
+            //Object of users input
+            var calendarDel = {
+                calendarid: $("#deletecalendar").find(":selected").val(),
+            }
+            
+            //Data object the server will recieve
+            var json = "id=deleteCalendar&jsonData=" + JSON.stringify(calendarDel);
+            console.log(json);    
+        
+            //Request to server
+            var request = $.ajax({
+                url: "http://127.0.0.1:52400/",
+                type: "POST",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                data: json
+            });
+            
+            //Response from server
+            request.done(function (response, textStatus, jqXHR){
+                delResponse(response);
+            });
+            
+            //Check response from server
+            function delResponse(response){
+                
+                if (response.response == "CALENDAR DELETED") {
+                    $('#deleteModal').modal('hide');     
+                } else {
+                    $(".form-group").addClass("has-error");
+                }
+            }
+        
     });
     
 });
+
+function setCalendarList() {
+        
+        //Set calendars
+        $.each(calendars, function (key, value) {
+                $('#selectcalendar').append($("<option/>", {
+                    value: value.calendarId,
+                    text: value.calendarName
+                }));
+            });
+    
+        //Set calendars
+        $.each(calendars, function (key, value) {
+                $('#sharecalendar').append($("<option/>", {
+                    value: value.calendarId,
+                    text: value.calendarName
+                }));
+            });
+        
+        $.each(calendars, function (key, value) {
+                $('#deletecalendar').append($("<option/>", {
+                    value: value.calendarId,
+                    text: value.calendarName
+                }));
+            });  
+}
+
+function setUserList() {
+        
+        //Set calendars
+        $.each(users, function (key, value) {
+                $('#shareuser').append($("<option/>", {
+                    //value: value.userid,
+                    text: value.username
+                }));
+            });   
+}
+
+
 
 

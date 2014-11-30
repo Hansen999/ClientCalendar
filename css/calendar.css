@@ -2,10 +2,9 @@ body {
     font-family: Gill Sans / Gill Sans MT, sans-serif;
 }
 
-.header {
-    height: 55px;
-    background-color: #428bca;  
-    border-bottom: solid;
+.navbar {
+    /*background-color: #428bca;
+    border-bottom: solid;*/
 }
 
 .welcome {
