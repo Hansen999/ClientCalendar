@@ -43,7 +43,7 @@ $(document).ready(function () {
             function login(response){
                 
                 //If user logged in
-                if(response.authentication == "true"){
+                if(response.authentication){
                     //Store userid and events in session
                     $.sessionStorage.set("userid", response.userid);
                     

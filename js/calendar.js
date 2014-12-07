@@ -5,105 +5,8 @@ Get all information before startup
 //Get all calendar & events
     getCalendars();
     getEvents();
-    getUsers();
     getQuote();
-    //getNotes();
-
-    var calendars = [];
-    var events = [];
-    var users = [];
-    //var notes = [];
-
-    function getCalendars() {
-
-            //Request to server
-            var request = $.ajax({
-                url: "http://127.0.0.1:52400/getAllCalendars/"+ $.sessionStorage.get("userid"),
-                type: "GET",
-                cache: false,
-                contentType: "application/json; charset=utf-8",
-                //data: header
-            });
-            
-            //Response from server
-            request.done(function (response, textStatus, jqXHR){
-                
-                response.forEach(function(calendar){
-                    calendars.push(calendar);
-                });
-                
-            });
-    }
-    
-    function getEvents() {
-        
-            //Request to server
-            var request = $.ajax({
-                url: "http://127.0.0.1:52400/getAllEvents/"+ $.sessionStorage.get("userid"),
-                type: "GET",
-                cache: false,
-                contentType: "application/json; charset=utf-8",
-                //data: header
-            });
-            
-            //Response from server
-            request.done(function (response, textStatus, jqXHR){
-                console.log(response);
-                response.forEach(function(event){
-                    var eventObj = {};
-                    eventObj["eventid"] = event.eventid;
-                    eventObj["start"] = new Date(event.start);
-                    eventObj["end"] = new Date(event.end);
-                    eventObj["title"] = event.title;
-                    eventObj["location"] = event.location;
-                    eventObj["notes"] = event.notes;
-                    eventObj["forecast"] = event.weatherData;
-                    events.push(eventObj);
-                });
-                   
-            });
-    }
-
-    function getQuote() {
-            
-        //Request to server
-            var request = $.ajax({
-                url: "http://127.0.0.1:52400/getQuote/",
-                type: "GET",
-                cache: false,
-                contentType: "application/json; charset=utf-8",
-                //data: header
-            });
-            
-            request.done(function (response, textStatus, jqXHR){
-                $('#qotdtopic').text(response.topic);
-                $('#qotd').text(response.quote);
-                $('#qotdauthor').text("Author: " + response.author);
-                
-                $(".QOTD").show();
-            });
-    }
-
-    function getUsers() {
-
-            //Request to server
-            var request = $.ajax({
-                url: "http://127.0.0.1:52400/getAllUsers/",
-                type: "GET",
-                cache: false,
-                contentType: "application/json; charset=utf-8",
-                //data: header
-            });
-            
-            //Response from server
-            request.done(function (response, textStatus, jqXHR){
-                
-                response.forEach(function(user){
-                    users.push(user);
-                });
-                
-            });
-    }
+    getUsers();
 
 //Run when all Ajax-calls are done
 $(document).ajaxStop(function () {
@@ -169,7 +72,7 @@ $(document).ajaxStop(function () {
             center: 'title',
             right: 'agendaDay agendaWeek month'
         },
-        defaultView: 'agendaWeek',
+        //defaultView: 'agendaWeek',
         timeFormat: 'H(:mm)',
         firstDay: 1,
         height: 600,
@@ -303,7 +206,7 @@ $(document).ajaxStop(function () {
                 
                 if (response.response == "EVENT CREATED") {
                     $('#eventModal').modal('hide');
-                    location.reload();
+                    //location.reload();
                 } else {
                     $(".form-group-event").addClass("has-error");
                 }
@@ -347,7 +250,7 @@ $(document).ajaxStop(function () {
                 
                 if (response.response == "CALENDAR CREATED") {
                     $('#calendarModal').modal('hide');
-                    location.reload();
+                    //location.reload();
                 } else {
                     $(".form-group-create").addClass("has-error");
                 }
@@ -390,7 +293,7 @@ $(document).ajaxStop(function () {
                 
                 if (response.response == "CALENDAR SHARED") {
                     $('#shareModal').modal('hide');
-                    location.reload();
+                    //location.reload();
                 } else {
                     $(".form-group-share").addClass("has-error");
                 }
@@ -432,7 +335,7 @@ $(document).ajaxStop(function () {
                 
                 if (response.response == "CALENDAR DELETED") {
                     $('#deleteModal').modal('hide');
-                    location.reload();
+                    //location.reload();
                 } else {
                     $(".form-group-del").addClass("has-error");
                 }
@@ -441,6 +344,105 @@ $(document).ajaxStop(function () {
     });
     
 });
+
+/********************************************
+GET AJAX CALLS
+********************************************/
+
+    var calendars = [];
+    var events = [];
+    var users = [];
+    
+    function getCalendars() {
+
+            //Request to server
+            var request = $.ajax({
+                url: "http://127.0.0.1:52400/getAllCalendars/"+ $.sessionStorage.get("userid"),
+                type: "GET",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                //data: header
+            });
+            
+            //Response from server
+            request.done(function (response, textStatus, jqXHR){
+                console.log(response);
+                response.forEach(function(calendar){
+                    calendars.push(calendar);
+                });
+                
+            });
+    }
+
+    function getEvents() {
+        
+            //Request to server
+            var request = $.ajax({
+                url: "http://127.0.0.1:52400/getAllEvents/"+ $.sessionStorage.get("userid"),
+                type: "GET",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                //data: header
+            });
+            
+            //Response from server
+            request.done(function (response, textStatus, jqXHR){
+                console.log(response);
+                response.forEach(function(event){
+                    var eventObj = {};
+                    eventObj["eventid"] = event.eventid;
+                    eventObj["start"] = new Date(event.start);
+                    eventObj["end"] = new Date(event.end);
+                    eventObj["title"] = event.title;
+                    eventObj["location"] = event.location;
+                    eventObj["notes"] = event.notes;
+                    eventObj["forecast"] = event.weatherData;
+                    events.push(eventObj);
+                });
+                   
+            });
+    }
+
+    function getQuote() {
+            
+        //Request to server
+            var request = $.ajax({
+                url: "http://127.0.0.1:52400/getQuote/",
+                type: "GET",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                //data: header
+            });
+            
+            request.done(function (response, textStatus, jqXHR){
+                $('#qotdtopic').text(response.topic);
+                $('#qotd').text(response.quote);
+                $('#qotdauthor').text("Author: " + response.author);
+                
+                $(".QOTD").show();
+            });
+    }
+
+    function getUsers() {
+
+            //Request to server
+            var request = $.ajax({
+                url: "http://127.0.0.1:52400/getAllUsers/",
+                type: "GET",
+                cache: false,
+                contentType: "application/json; charset=utf-8",
+                //data: header
+            });
+            
+            //Response from server
+            request.done(function (response, textStatus, jqXHR){
+                
+                response.forEach(function(user){
+                    users.push(user);
+                });
+                
+            });
+    }
 
 
 /********************************************
@@ -482,7 +484,6 @@ function setUserList() {
                 }));
             });   
 }
-
 
 
 
